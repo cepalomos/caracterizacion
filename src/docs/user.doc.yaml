@@ -1,0 +1,65 @@
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    login:
+      type: object
+      properties:
+        username:
+          type: string
+          example: admin
+        password:
+          type: string
+          example: admin
+  responses:
+    loginOk:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 16763be4-6022-406e-a950-fcd5018633ca
+        username:
+          type: string
+          example: admin
+        login:
+          type: boolean
+          example: true
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+    generalError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Descripción del error
+
+paths:
+  /api/users/login:
+    post:
+      summary: Ruta para hacer el login de usuario
+      tags:
+        - Users
+      requestBody:
+        required: true
+        description: Datos requeridos para hacer login
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/login"
+      responses:
+        "200":
+          description: Me muestra el objeto con la informacion de login
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/loginOk"
+        "500":
+          description: Error general del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
