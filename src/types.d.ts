@@ -1,3 +1,5 @@
+import { Request } from 'express'
+
 // Models
 export interface UserAttributes {
   id: string
@@ -17,4 +19,13 @@ export interface UserLogin extends Omit<UserAttributes, 'password'> {
 }
 
 export interface Payload extends Omit<UserAttributes, 'password'> {
+}
+
+export interface NucleoAttributes {
+  id: string
+  name: string
+}
+
+export interface AuthRequest extends Request {
+  decoded: Payload
 }

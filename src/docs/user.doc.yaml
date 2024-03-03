@@ -1,11 +1,20 @@
 components:
   securitySchemes:
-    BearerAuth:
+    bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
   schemas:
     login:
+      type: object
+      properties:
+        username:
+          type: string
+          example: admin
+        password:
+          type: string
+          example: admin
+    createUser:
       type: object
       properties:
         username:
@@ -36,7 +45,26 @@ components:
         message:
           type: string
           description: Descripción del error
-
+    createNewUser:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 16763be4-6022-406e-a950-fcd5018633ca
+        username:
+          type: string
+          example: admin
+        password:
+          type: string
+          example: admin
+        # updatedAt:
+        #   type: string
+        #   format: "date-time"
+        #   example: "2024-02-11T18:50:49.964Z"
+        # createdAt:
+        #   type: string
+        #   format: "date-time"
+        #   example: "2024-02-11T18:50:49.964Z"
 paths:
   /api/users/login:
     post:
@@ -57,6 +85,39 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/responses/loginOk"
+        "500":
+          description: Error general del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
+  /api/users/:
+    post:
+      summary: Ruta en la cual se crea usuario nuevo
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Datos requeridos para crear un usuario
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createUser"
+      responses:
+        "201":
+          description: Me muestra el objeto con la informacion de usuario creado recientemente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/createNewUser"
+        "401":
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
         "500":
           description: Error general del servidor
           content:

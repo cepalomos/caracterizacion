@@ -1,6 +1,6 @@
-import { User } from '../db/models/user'
-import { UserLogin } from '../types'
-import { ClientError, compareHash, signToken } from '../utils'
+import { User, UserCreation } from '../db/models/user'
+import { UserAttributes, UserLogin } from '../types'
+import { ClientError, compareHash, hash, signToken } from '../utils'
 
 export const loginService = async (username: string, password: string): Promise<UserLogin | null> => {
   const user = await User.findOne({ where: { username }, attributes: { exclude: ['createdAt', 'updatedAt'] } })
@@ -15,4 +15,10 @@ export const loginService = async (username: string, password: string): Promise<
   } else {
     return null
   }
+}
+
+export const createUser = async (createData: UserCreation): Promise<UserAttributes> => {
+  const passwordHash = await hash(createData.password)
+  const { id, username } = (await User.create({ username: createData.username, password: passwordHash })).dataValues
+  return { id, username, password: createData.password }
 }

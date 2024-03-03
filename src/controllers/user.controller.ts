@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { loginData } from '../types'
+import { AuthRequest, loginData } from '../types'
 import { userService } from '../service'
 import { ClientError } from '../utils'
 
@@ -12,6 +12,16 @@ export const loginControllers = async (req: Request, res: Response, next: NextFu
     } else {
       res.status(200).json(userLogin)
     }
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const createUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const createData = (req as AuthRequest).body
+  try {
+    const userNew = await userService.createUser(createData)
+    res.status(201).json(userNew)
   } catch (error) {
     next(error)
   }
