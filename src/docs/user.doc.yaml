@@ -112,6 +112,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/responses/createNewUser"
+        "400":
+          description: Datos de Ingreso incorrectos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
         "401":
           description: No autorizado
           content:
