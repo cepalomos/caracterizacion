@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { AuthRequest, loginData } from '../types'
+import { AuthRequest, UpdateUserAttributes, UserAttributes, loginData } from '../types'
 import { userService } from '../service'
 import { ClientError } from '../utils'
 
@@ -22,6 +22,16 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
   try {
     const userNew = await userService.createUser(createData)
     res.status(201).json(userNew)
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const putUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  try {
+    const updateUser: UpdateUserAttributes = req.body
+    const updateUserDB: UserAttributes = await userService.putUser(updateUser)
+    res.status(200).json(updateUserDB)
   } catch (error) {
     next(error)
   }

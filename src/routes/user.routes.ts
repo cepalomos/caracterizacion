@@ -7,6 +7,8 @@ import validate from '../middleware/validador'
 const router = Router()
 
 router.route('/login').post(userController.loginControllers)
-router.route('/').post(Authorization.authorization, validate.createUser, userController.createUser)
+router.route('/')
+  .post(Authorization.authorization, validate.createUser, userController.createUser)
+  .put(Authorization.authorization, validate.putUser, userController.putUser)
 
 export default router

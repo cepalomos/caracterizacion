@@ -23,6 +23,22 @@ components:
         password:
           type: string
           example: admin
+    updateUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 16763be4-6022-406e-a950-fcd5018633ca
+        username:
+          type: string
+          example: admin
+        password:
+          type: string
+          example: admin
+        oldPassword:
+          type: string
+          example: admin
   responses:
     loginOk:
       type: object
@@ -108,6 +124,44 @@ paths:
       responses:
         "201":
           description: Me muestra el objeto con la informacion de usuario creado recientemente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/createNewUser"
+        "400":
+          description: Datos de Ingreso incorrectos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
+        "401":
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
+        "500":
+          description: Error general del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
+    put:
+      summary: Ruta en la cual se actualiza al usuario existente
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        description: Datos requeridos para actualizar un usuario
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updateUser"
+      responses:
+        "200":
+          description: Me muestra el objeto con la informacion de usuario actualizado recientemente
           content:
             application/json:
               schema:

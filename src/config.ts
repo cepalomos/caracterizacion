@@ -10,7 +10,7 @@ const swaggerOptions: swaggerJSDoc.Options = {
   definition: {
     openapi: '3.0.1',
     info: {
-      title: 'Laboratorio Civico',
+      title: 'App de Caracterizacion de poblacion',
       description: 'Documentación del Backend de la aplicación de Caracterizacion',
       version: '1.0'
     }

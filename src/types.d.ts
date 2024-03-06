@@ -29,3 +29,7 @@ export interface NucleoAttributes {
 export interface AuthRequest extends Request {
   decoded: Payload
 }
+
+export interface UpdateUserAttributes extends UserAttributes {
+  oldPassword: string
+}

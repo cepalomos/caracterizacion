@@ -1,5 +1,5 @@
 import { User, UserCreation } from '../db/models/user'
-import { UserAttributes, UserLogin } from '../types'
+import { UpdateUserAttributes, UserAttributes, UserLogin } from '../types'
 import { ClientError, compareHash, hash, signToken } from '../utils'
 
 export const loginService = async (username: string, password: string): Promise<UserLogin | null> => {
@@ -21,4 +21,17 @@ export const createUser = async (createData: UserCreation): Promise<UserAttribut
   const passwordHash = await hash(createData.password)
   const { id, username } = (await User.create({ username: createData.username, password: passwordHash })).dataValues
   return { id, username, password: createData.password }
+}
+
+export const putUser = async (updateUser: UpdateUserAttributes): Promise<UserAttributes> => {
+  const user = await User.findByPk(updateUser.id)
+  if (user == null) {
+    throw new ClientError('El usuario suministrado no existe', 400)
+  }
+  if (!(await compareHash(updateUser.oldPassword, user.password))) {
+    throw new ClientError('El password viejo es incorrecto', 400)
+  }
+  const newPasswordHash = await hash(updateUser.password)
+  await user.update({ username: updateUser.username, password: newPasswordHash })
+  return { id: user.id, username: user.username, password: updateUser.password }
 }
