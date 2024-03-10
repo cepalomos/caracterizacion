@@ -81,6 +81,15 @@ components:
         #   type: string
         #   format: "date-time"
         #   example: "2024-02-11T18:50:49.964Z"
+    userInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 16763be4-6022-406e-a950-fcd5018633ca
+        username:
+          type: string
+          example: admin
 paths:
   /api/users/login:
     post:
@@ -107,7 +116,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/responses/generalError"
+
   /api/users/:
+    get:
+      summary: Ruta que trae todos los usuarios en la base de datos
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Se entrega la informacion de todos los usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/responses/userInfo"
+        "401":
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
+        "500":
+          description: Error general del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
     post:
       summary: Ruta en la cual se crea usuario nuevo
       tags:

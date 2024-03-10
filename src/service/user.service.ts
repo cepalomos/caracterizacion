@@ -1,5 +1,5 @@
 import { User, UserCreation } from '../db/models/user'
-import { UpdateUserAttributes, UserAttributes, UserLogin } from '../types'
+import { Payload, UpdateUserAttributes, UserAttributes, UserLogin } from '../types'
 import { ClientError, compareHash, hash, signToken } from '../utils'
 
 export const loginService = async (username: string, password: string): Promise<UserLogin | null> => {
@@ -43,4 +43,9 @@ export const deleteUser = async (id: UserAttributes['id']): Promise<string> => {
   } else {
     throw new ClientError('No existe el usuario', 400)
   }
+}
+
+export const getAllUsers = async (): Promise<Payload[]> => {
+  const users = await User.findAll({ attributes: { exclude: ['password', 'updatedAt', 'createdAt'] } })
+  return users
 }

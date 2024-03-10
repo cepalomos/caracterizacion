@@ -47,3 +47,12 @@ export const deleteUser = async (req: Request, res: Response, next: NextFunction
     next(error)
   }
 }
+
+export const getAllUsers = async (_: Request, res: Response, next: NextFunction): Promise<any> => {
+  try {
+    const allUser = await userService.getAllUsers()
+    res.json(allUser)
+  } catch (error) {
+    next(error)
+  }
+}
