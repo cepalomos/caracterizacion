@@ -36,3 +36,14 @@ export const putUser = async (req: Request, res: Response, next: NextFunction): 
     next(error)
   }
 }
+
+export const deleteUser = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  const { id: idUser }: Pick<UserAttributes, 'id'> = req.params as Pick<UserAttributes, 'id'>
+  console.log(idUser)
+  try {
+    const deleteUser = await userService.deleteUser(idUser)
+    res.json({ message: deleteUser })
+  } catch (error) {
+    next(error)
+  }
+}

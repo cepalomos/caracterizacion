@@ -35,3 +35,12 @@ export const putUser = async (updateUser: UpdateUserAttributes): Promise<UserAtt
   await user.update({ username: updateUser.username, password: newPasswordHash })
   return { id: user.id, username: user.username, password: updateUser.password }
 }
+
+export const deleteUser = async (id: UserAttributes['id']): Promise<string> => {
+  const deleteUser = await User.destroy({ where: { id } })
+  if (deleteUser === 1) {
+    return 'Se elimino el Usuario correctamente'
+  } else {
+    throw new ClientError('No existe el usuario', 400)
+  }
+}

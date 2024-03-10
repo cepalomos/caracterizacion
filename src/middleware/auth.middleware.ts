@@ -4,7 +4,6 @@ import { AuthRequest, Payload } from '../types'
 
 export const authorization = (req: Request, _res: Response, next: NextFunction): void => {
   const beared = req.headers.authorization?.split(' ')
-
   let token
   if (beared == null || beared.length === 0) {
     throw new ClientError('No autorizado', 401)

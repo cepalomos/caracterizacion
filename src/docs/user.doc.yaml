@@ -184,3 +184,42 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/responses/generalError"
+
+  /api/users/{userId}:
+    delete:
+      summary: Elimina el usuario que se pasa por parametro
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: userId
+          type: string
+          required: true
+          description: Es el id tipo UUID del usuario
+      responses:
+        "200":
+          description: Me muestra el objeto con la informacion de usuario actualizado recientemente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
+        "400":
+          description: Datos de Ingreso incorrectos
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
+        "401":
+          description: No autorizado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
+        "500":
+          description: Error general del servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/generalError"
